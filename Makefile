@@ -49,9 +49,9 @@ submit-jobs:
 	@echo "Implemented in Phase 5"
 
 seed-limits:
-	@echo "Implemented in Phase 2"
+	cd tools && . .venv/bin/activate && python -m limits_cli seed --clients 50
 
 trade-gen:
-	@echo "Implemented in Phase 2"
+	cd tools && . .venv/bin/activate && python -m trade_gen --rate 20
 
 all: up topics register-schemas pinot-tables submit-jobs seed-limits trade-gen
