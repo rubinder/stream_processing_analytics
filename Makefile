@@ -43,7 +43,14 @@ register-schemas:
 	done
 
 pinot-tables:
-	@echo "Implemented in Phase 4"
+	@for name in trades positions breaches; do \
+		echo "Adding $$name schema..."; \
+		curl -fsS -X POST -H "Content-Type: application/json" \
+			-d @pinot/$${name}_schema.json http://localhost:9000/schemas; echo; \
+		echo "Adding $$name table..."; \
+		curl -fsS -X POST -H "Content-Type: application/json" \
+			-d @pinot/$${name}_table.json http://localhost:9000/tables; echo; \
+	done
 
 submit-jobs:
 	docker compose exec -T flink-jobmanager flink run -d -c com.example.position.PositionEngineJob /jars/position-engine/position-engine-0.1.0.jar
