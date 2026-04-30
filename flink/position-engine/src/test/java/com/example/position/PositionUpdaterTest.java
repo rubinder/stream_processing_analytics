@@ -21,7 +21,7 @@ class PositionUpdaterTest {
         BigDecimal n = p.multiply(BigDecimal.valueOf(qty)).setScale(2);
         return EnrichedTrade.newBuilder()
             .setTradeId(tid).setOrderId("o").setClientId("C0001").setSymbol(sym)
-            .setSide(side).setQuantity(qty).setSignedQty(signed)
+            .setSide(side.name()).setQuantity(qty).setSignedQty(signed)
             .setPrice(p).setNotional(n)
             .setCurrency("USD").setVenue("X").setSector("Technology")
             .setEventTs(Instant.ofEpochMilli(ts)).build();

@@ -23,7 +23,7 @@ public class Enricher implements MapFunction<Trade, EnrichedTrade> {
             .setOrderId(t.getOrderId())
             .setClientId(t.getClientId())
             .setSymbol(t.getSymbol())
-            .setSide(t.getSide())
+            .setSide(t.getSide().name())
             .setQuantity(t.getQuantity())
             .setSignedQty(signed)
             .setPrice(t.getPrice())

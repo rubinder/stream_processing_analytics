@@ -8,7 +8,6 @@ import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDes
 
 import java.time.Duration;
 import java.util.Properties;
-import java.util.function.ToLongFunction;
 
 public final class KafkaSourceFactory {
     private KafkaSourceFactory() {}
@@ -29,7 +28,7 @@ public final class KafkaSourceFactory {
     }
 
     public static <T> WatermarkStrategy<T> watermarkStrategyTyped(
-            ToLongFunction<T> tsExtractor) {
+            SerializableToLong<T> tsExtractor) {
         return WatermarkStrategy.<T>forBoundedOutOfOrderness(Duration.ofSeconds(5))
             .withIdleness(Duration.ofSeconds(30))
             .withTimestampAssigner((event, recordTs) -> tsExtractor.applyAsLong(event));
