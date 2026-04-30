@@ -43,7 +43,7 @@ def cli(ctx, bootstrap, registry):
 def set(obj, client_id, max_gross, max_order, max_tpm):
     """Publish/replace one client's limits."""
     schema = json.loads((SCHEMAS_DIR / "client_limit.avsc").read_text())
-    sid = requests.get(f"{obj['registry']}/subjects/client_limit-value/versions/latest").json()["id"]
+    sid = requests.get(f"{obj['registry']}/subjects/client-limits-value/versions/latest").json()["id"]
     producer = Producer({"bootstrap.servers": obj["bootstrap"]})
 
     payload = {
@@ -68,7 +68,7 @@ def set(obj, client_id, max_gross, max_order, max_tpm):
 def seed(obj, clients):
     """Publish default limits for C0000..C{clients-1}."""
     schema = json.loads((SCHEMAS_DIR / "client_limit.avsc").read_text())
-    sid = requests.get(f"{obj['registry']}/subjects/client_limit-value/versions/latest").json()["id"]
+    sid = requests.get(f"{obj['registry']}/subjects/client-limits-value/versions/latest").json()["id"]
     producer = Producer({"bootstrap.servers": obj["bootstrap"]})
 
     for i in range(clients):

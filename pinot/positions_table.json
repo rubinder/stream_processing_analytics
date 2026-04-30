@@ -30,15 +30,5 @@
       "realtime.segment.flush.threshold.time": "1h"
     }
   },
-  "instanceAssignmentConfigMap": {
-    "CONSUMING": {
-      "tagPoolConfig": {"tag": "DefaultTenant_REALTIME"},
-      "replicaGroupPartitionConfig": {
-        "replicaGroupBased": true,
-        "numReplicaGroups": 1,
-        "numInstancesPerReplicaGroup": 1
-      }
-    }
-  },
   "metadata": {}
 }

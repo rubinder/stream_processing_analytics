@@ -45,7 +45,7 @@ def _avro_encode(schema: dict, schema_id: int, payload: dict) -> bytes:
 @click.option("--duration", default=0, help="0 = run forever")
 def main(bootstrap, registry, rate, clients, seed, duration):
     schema = _load_schema("trade")
-    schema_id = _registered_schema_id(registry, "trade-value")
+    schema_id = _registered_schema_id(registry, "trades-value")
     sectors = json.loads(SECTORS_PATH.read_text())
     factory = TradeFactory(symbols=list(sectors.keys()), client_count=clients, seed=seed)
 

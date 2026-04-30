@@ -28,7 +28,7 @@ class RiskEvaluatorTest {
         BigDecimal p = new BigDecimal(price);
         BigDecimal n = p.multiply(BigDecimal.valueOf(qty)).setScale(2);
         return EnrichedTrade.newBuilder()
-            .setTradeId("t-" + ts).setOrderId("o-" + ts).setClientId(c).setSymbol(s).setSide(Side.BUY)
+            .setTradeId("t-" + ts).setOrderId("o-" + ts).setClientId(c).setSymbol(s).setSide("BUY")
             .setQuantity(qty).setSignedQty(qty).setPrice(p).setNotional(n)
             .setCurrency("USD").setVenue("X").setSector("X")
             .setEventTs(Instant.ofEpochMilli(ts)).build();

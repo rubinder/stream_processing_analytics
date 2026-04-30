@@ -2,7 +2,6 @@ package com.example.position;
 
 import com.example.avro.EnrichedTrade;
 import com.example.avro.Position;
-import com.example.avro.Side;
 import org.apache.flink.api.common.functions.OpenContext;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
@@ -46,7 +45,7 @@ public class PositionUpdater extends KeyedProcessFunction<String, EnrichedTrade,
         long previousNet = s.netQuantity;
         s.netQuantity += t.getSignedQty();
 
-        if (t.getSide() == Side.BUY) {
+        if ("BUY".equals(t.getSide())) {
             BigDecimal addQty = BigDecimal.valueOf(t.getQuantity());
             BigDecimal prevQty = BigDecimal.valueOf(Math.max(previousNet, 0L));
             BigDecimal numerator = s.weightedCostBasis.multiply(prevQty).add(price.multiply(addQty));

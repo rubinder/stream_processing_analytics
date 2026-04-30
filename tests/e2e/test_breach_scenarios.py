@@ -17,9 +17,19 @@ REGISTRY = os.environ.get("SCHEMA_REGISTRY", "http://localhost:8081")
 SCHEMAS_DIR = Path(__file__).resolve().parent.parent.parent / "schemas"
 
 
+_SCHEMA_TO_TOPIC = {
+    "trade": "trades",
+    "enriched_trade": "enriched-trades",
+    "client_limit": "client-limits",
+    "position": "positions",
+    "breach": "breaches",
+}
+
+
 def _avro(schema_name, payload):
     schema = fastavro.parse_schema(json.loads((SCHEMAS_DIR / f"{schema_name}.avsc").read_text()))
-    sid = requests.get(f"{REGISTRY}/subjects/{schema_name}-value/versions/latest").json()["id"]
+    subject = f"{_SCHEMA_TO_TOPIC[schema_name]}-value"
+    sid = requests.get(f"{REGISTRY}/subjects/{subject}/versions/latest").json()["id"]
     out = BytesIO()
     out.write(b"\x00")
     out.write(sid.to_bytes(4, "big"))

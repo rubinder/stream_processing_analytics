@@ -1,18 +1,18 @@
 SHELL := /usr/bin/env bash
 .PHONY: up down clean topics register-schemas pinot-tables submit-jobs seed-limits trade-gen all
 
-KAFKA := docker compose exec -T kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092
+KAFKA := docker-compose exec -T kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092
 
 up:
-	docker compose up -d
+	docker-compose up -d
 	@echo "Waiting for services..."
 	@sleep 5
 
 down:
-	docker compose down
+	docker-compose down
 
 clean:
-	docker compose down -v
+	docker-compose down -v
 	rm -rf checkpoints/ volumes/
 
 topics:
@@ -53,8 +53,8 @@ pinot-tables:
 	done
 
 submit-jobs:
-	docker compose exec -T flink-jobmanager flink run -d -c com.example.position.PositionEngineJob /jars/position-engine/position-engine-0.1.0.jar
-	docker compose exec -T flink-jobmanager flink run -d -c com.example.risk.RiskEngineJob /jars/risk-engine/risk-engine-0.1.0.jar || echo "(risk-engine not built yet — that's OK)"
+	docker-compose exec -T flink-jobmanager flink run -d -c com.example.position.PositionEngineJob /jars/position-engine/position-engine-0.1.0.jar
+	docker-compose exec -T flink-jobmanager flink run -d -c com.example.risk.RiskEngineJob /jars/risk-engine/risk-engine-0.1.0.jar || echo "(risk-engine not built yet — that's OK)"
 
 seed-limits:
 	cd tools && . .venv/bin/activate && python -m limits_cli seed --clients 50
