@@ -1,0 +1,22 @@
+{
+  "schemaName": "trades",
+  "dimensionFieldSpecs": [
+    {"name": "trade_id", "dataType": "STRING"},
+    {"name": "order_id", "dataType": "STRING"},
+    {"name": "client_id", "dataType": "STRING"},
+    {"name": "symbol", "dataType": "STRING"},
+    {"name": "side", "dataType": "STRING"},
+    {"name": "currency", "dataType": "STRING"},
+    {"name": "venue", "dataType": "STRING"},
+    {"name": "sector", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [
+    {"name": "quantity", "dataType": "LONG"},
+    {"name": "signed_qty", "dataType": "LONG"},
+    {"name": "price", "dataType": "BYTES"},
+    {"name": "notional", "dataType": "BYTES"}
+  ],
+  "dateTimeFieldSpecs": [
+    {"name": "event_ts", "dataType": "LONG", "format": "1:MILLISECONDS:EPOCH", "granularity": "1:MILLISECONDS"}
+  ]
+}

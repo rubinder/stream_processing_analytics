@@ -1,0 +1,44 @@
+{
+  "tableName": "positions",
+  "tableType": "REALTIME",
+  "segmentsConfig": {
+    "timeColumnName": "last_update",
+    "schemaName": "positions",
+    "replication": "1",
+    "retentionTimeUnit": "DAYS",
+    "retentionTimeValue": "30"
+  },
+  "tenants": {},
+  "upsertConfig": {
+    "mode": "FULL",
+    "comparisonColumn": "last_update"
+  },
+  "routing": {
+    "instanceSelectorType": "strictReplicaGroup"
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "invertedIndexColumns": ["client_id", "symbol", "sector"],
+    "streamConfigs": {
+      "streamType": "kafka",
+      "stream.kafka.topic.name": "positions",
+      "stream.kafka.broker.list": "kafka:9092",
+      "stream.kafka.consumer.type": "lowLevel",
+      "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",
+      "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.inputformat.avro.confluent.KafkaConfluentSchemaRegistryAvroMessageDecoder",
+      "stream.kafka.decoder.prop.schema.registry.rest.url": "http://schema-registry:8081",
+      "realtime.segment.flush.threshold.time": "1h"
+    }
+  },
+  "instanceAssignmentConfigMap": {
+    "CONSUMING": {
+      "tagPoolConfig": {"tag": "DefaultTenant_REALTIME"},
+      "replicaGroupPartitionConfig": {
+        "replicaGroupBased": true,
+        "numReplicaGroups": 1,
+        "numInstancesPerReplicaGroup": 1
+      }
+    }
+  },
+  "metadata": {}
+}

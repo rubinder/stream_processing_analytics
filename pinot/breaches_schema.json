@@ -1,0 +1,18 @@
+{
+  "schemaName": "breaches",
+  "dimensionFieldSpecs": [
+    {"name": "breach_id", "dataType": "STRING"},
+    {"name": "client_id", "dataType": "STRING"},
+    {"name": "breach_type", "dataType": "STRING"},
+    {"name": "trade_id", "dataType": "STRING"},
+    {"name": "order_id", "dataType": "STRING"},
+    {"name": "details", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [
+    {"name": "limit_value", "dataType": "BYTES"},
+    {"name": "actual_value", "dataType": "BYTES"}
+  ],
+  "dateTimeFieldSpecs": [
+    {"name": "detected_ts", "dataType": "LONG", "format": "1:MILLISECONDS:EPOCH", "granularity": "1:MILLISECONDS"}
+  ]
+}

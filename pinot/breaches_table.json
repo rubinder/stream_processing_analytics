@@ -1,0 +1,27 @@
+{
+  "tableName": "breaches",
+  "tableType": "REALTIME",
+  "segmentsConfig": {
+    "timeColumnName": "detected_ts",
+    "schemaName": "breaches",
+    "replication": "1",
+    "retentionTimeUnit": "DAYS",
+    "retentionTimeValue": "7"
+  },
+  "tenants": {},
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "invertedIndexColumns": ["client_id", "breach_type"],
+    "streamConfigs": {
+      "streamType": "kafka",
+      "stream.kafka.topic.name": "breaches",
+      "stream.kafka.broker.list": "kafka:9092",
+      "stream.kafka.consumer.type": "lowLevel",
+      "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",
+      "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.inputformat.avro.confluent.KafkaConfluentSchemaRegistryAvroMessageDecoder",
+      "stream.kafka.decoder.prop.schema.registry.rest.url": "http://schema-registry:8081",
+      "realtime.segment.flush.threshold.time": "1h"
+    }
+  },
+  "metadata": {}
+}
