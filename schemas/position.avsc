@@ -8,6 +8,8 @@
     {"name": "net_quantity", "type": "long"},
     {"name": "avg_price", "type": {"type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 4}},
     {"name": "notional", "type": {"type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 2}},
+    {"name": "avg_price_double", "type": "double", "default": 0.0},
+    {"name": "notional_double", "type": "double", "default": 0.0},
     {"name": "sector", "type": "string"},
     {"name": "last_update", "type": {"type": "long", "logicalType": "timestamp-millis"}}
   ]

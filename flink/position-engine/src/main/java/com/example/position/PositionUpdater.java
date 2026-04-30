@@ -68,12 +68,16 @@ public class PositionUpdater extends KeyedProcessFunction<String, EnrichedTrade,
 
         ctx.output(ENRICHED_TAG, t);
 
+        BigDecimal avgPrice = s.weightedCostBasis.setScale(4, RoundingMode.HALF_UP);
+
         out.collect(Position.newBuilder()
             .setClientId(t.getClientId())
             .setSymbol(t.getSymbol())
             .setNetQuantity(s.netQuantity)
-            .setAvgPrice(s.weightedCostBasis.setScale(4, RoundingMode.HALF_UP))
+            .setAvgPrice(avgPrice)
             .setNotional(notional)
+            .setAvgPriceDouble(avgPrice.doubleValue())
+            .setNotionalDouble(notional.doubleValue())
             .setSector(s.sector)
             .setLastUpdate(Instant.ofEpochMilli(s.lastUpdateMs))
             .build());

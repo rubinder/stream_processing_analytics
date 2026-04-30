@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { pinotQuery } from "../pinot";
 
-type Row = { symbol: string; net_quantity: number; notional: number; sector: string };
+type Row = { symbol: string; net_quantity: number; notional_double: number; sector: string };
 
 export function Positions({ clientId }: { clientId: string | null }) {
   const where = clientId ? `WHERE client_id = '${clientId}'` : "";
@@ -9,7 +9,7 @@ export function Positions({ clientId }: { clientId: string | null }) {
     queryKey: ["positions", clientId],
     queryFn: () =>
       pinotQuery<Row>(
-        `SELECT symbol, net_quantity, notional, sector FROM positions ${where} ORDER BY ABS(notional) DESC LIMIT 100`
+        `SELECT symbol, net_quantity, notional_double, sector FROM positions ${where} ORDER BY ABS(notional_double) DESC LIMIT 100`
       ),
     refetchInterval: 2_000,
   });
@@ -33,7 +33,7 @@ export function Positions({ clientId }: { clientId: string | null }) {
             <tr key={r.symbol} className="border-t border-neutral-800">
               <td>{r.symbol}</td>
               <td className="text-right">{Number(r.net_quantity).toLocaleString()}</td>
-              <td className="text-right">{Number(r.notional).toLocaleString()}</td>
+              <td className="text-right">{Number(r.notional_double).toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>
               <td className="text-neutral-500">{r.sector}</td>
             </tr>
           ))}

@@ -9,7 +9,9 @@
   "metricFieldSpecs": [
     {"name": "net_quantity", "dataType": "LONG"},
     {"name": "avg_price", "dataType": "BYTES"},
-    {"name": "notional", "dataType": "BYTES"}
+    {"name": "notional", "dataType": "BYTES"},
+    {"name": "avg_price_double", "dataType": "DOUBLE"},
+    {"name": "notional_double", "dataType": "DOUBLE"}
   ],
   "dateTimeFieldSpecs": [
     {"name": "last_update", "dataType": "LONG", "format": "1:MILLISECONDS:EPOCH", "granularity": "1:MILLISECONDS"}
