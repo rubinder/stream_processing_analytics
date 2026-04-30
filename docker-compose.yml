@@ -57,3 +57,56 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
       KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8081
+
+  flink-jobmanager:
+    image: flink:2.2.0-java21
+    container_name: flink-jobmanager
+    depends_on:
+      kafka:
+        condition: service_healthy
+      schema-registry:
+        condition: service_healthy
+    ports:
+      - "8082:8081"
+      - "9249:9249"
+    command: jobmanager
+    environment:
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: flink-jobmanager
+        execution.checkpointing.interval: 30s
+        state.backend.type: rocksdb
+        state.checkpoints.dir: file:///tmp/flink-checkpoints
+        execution.checkpointing.mode: EXACTLY_ONCE
+      KAFKA_BOOTSTRAP: kafka:9092
+      SCHEMA_REGISTRY: http://schema-registry:8081
+    volumes:
+      - ./flink/position-engine/target:/jars/position-engine
+      - ./flink/risk-engine/target:/jars/risk-engine
+      - flink-checkpoints:/tmp/flink-checkpoints
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8081/v1/overview || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  flink-taskmanager:
+    image: flink:2.2.0-java21
+    container_name: flink-taskmanager
+    depends_on:
+      flink-jobmanager:
+        condition: service_healthy
+    command: taskmanager
+    ports:
+      - "9250:9250"
+    environment:
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: flink-jobmanager
+        taskmanager.numberOfTaskSlots: 4
+        state.backend.type: rocksdb
+      KAFKA_BOOTSTRAP: kafka:9092
+      SCHEMA_REGISTRY: http://schema-registry:8081
+    volumes:
+      - flink-checkpoints:/tmp/flink-checkpoints
+
+volumes:
+  flink-checkpoints:

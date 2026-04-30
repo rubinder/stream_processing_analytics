@@ -46,7 +46,8 @@ pinot-tables:
 	@echo "Implemented in Phase 4"
 
 submit-jobs:
-	@echo "Implemented in Phase 5"
+	docker compose exec -T flink-jobmanager flink run -d -c com.example.position.PositionEngineJob /jars/position-engine/position-engine-0.1.0.jar
+	docker compose exec -T flink-jobmanager flink run -d -c com.example.risk.RiskEngineJob /jars/risk-engine/risk-engine-0.1.0.jar || echo "(risk-engine not built yet — that's OK)"
 
 seed-limits:
 	cd tools && . .venv/bin/activate && python -m limits_cli seed --clients 50
