@@ -28,6 +28,9 @@ public class RiskEvaluator extends KeyedBroadcastProcessFunction<String, RiskInp
 
     private transient MapState<String, SymbolNotional> symbolNotionals;
     private transient ListState<Long> recentTimestamps;
+    private transient org.apache.flink.metrics.Counter breachesGross;
+    private transient org.apache.flink.metrics.Counter breachesSingle;
+    private transient org.apache.flink.metrics.Counter breachesVelocity;
 
     @Override
     public void open(OpenContext ctx) {
@@ -35,6 +38,10 @@ public class RiskEvaluator extends KeyedBroadcastProcessFunction<String, RiskInp
             new MapStateDescriptor<>("symbol-notionals", Types.STRING, Types.GENERIC(SymbolNotional.class)));
         recentTimestamps = getRuntimeContext().getListState(
             new ListStateDescriptor<>("recent-ts", Types.LONG));
+        var mg = getRuntimeContext().getMetricGroup();
+        breachesGross    = mg.counter("breaches_emitted_gross_notional");
+        breachesSingle   = mg.counter("breaches_emitted_single_order");
+        breachesVelocity = mg.counter("breaches_emitted_velocity");
     }
 
     @Override
@@ -75,6 +82,7 @@ public class RiskEvaluator extends KeyedBroadcastProcessFunction<String, RiskInp
             emit(out, t.getClientId(), BreachType.SINGLE_ORDER_NOTIONAL, singleLimit, tradeNotional,
                 t.getTradeId(), t.getOrderId(), eventMs,
                 "order notional " + tradeNotional + " exceeds " + singleLimit);
+            breachesSingle.inc();
         }
 
         // Rule 2: GROSS_NOTIONAL — sum across all symbols
@@ -87,6 +95,7 @@ public class RiskEvaluator extends KeyedBroadcastProcessFunction<String, RiskInp
             emit(out, t.getClientId(), BreachType.GROSS_NOTIONAL, grossLimit, gross,
                 t.getTradeId(), t.getOrderId(), eventMs,
                 "gross notional " + gross + " exceeds " + grossLimit);
+            breachesGross.inc();
         }
 
         // Rule 3: TRADE_VELOCITY — sliding 60s window
@@ -101,6 +110,7 @@ public class RiskEvaluator extends KeyedBroadcastProcessFunction<String, RiskInp
                 BigDecimal.valueOf(kept.size()),
                 t.getTradeId(), t.getOrderId(), eventMs,
                 kept.size() + " trades in 60s window");
+            breachesVelocity.inc();
         }
     }
 
