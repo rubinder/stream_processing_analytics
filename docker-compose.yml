@@ -108,5 +108,43 @@ services:
     volumes:
       - flink-checkpoints:/tmp/flink-checkpoints
 
+  pinot-zk:
+    image: zookeeper:3.9
+    container_name: pinot-zk
+    ports:
+      - "2181:2181"
+
+  pinot-controller:
+    image: apachepinot/pinot:1.5.0
+    container_name: pinot-controller
+    depends_on:
+      - pinot-zk
+    command: StartController -zkAddress pinot-zk:2181 -clusterName pinot
+    ports:
+      - "9000:9000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9000/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  pinot-broker:
+    image: apachepinot/pinot:1.5.0
+    container_name: pinot-broker
+    depends_on:
+      pinot-controller:
+        condition: service_healthy
+    command: StartBroker -zkAddress pinot-zk:2181 -clusterName pinot
+    ports:
+      - "8099:8099"
+
+  pinot-server:
+    image: apachepinot/pinot:1.5.0
+    container_name: pinot-server
+    depends_on:
+      pinot-controller:
+        condition: service_healthy
+    command: StartServer -zkAddress pinot-zk:2181 -clusterName pinot
+
 volumes:
   flink-checkpoints:
