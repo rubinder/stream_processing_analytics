@@ -1,0 +1,17 @@
+{
+  "type": "record",
+  "namespace": "com.example.avro",
+  "name": "Trade",
+  "fields": [
+    {"name": "trade_id", "type": "string"},
+    {"name": "order_id", "type": "string"},
+    {"name": "client_id", "type": "string"},
+    {"name": "symbol", "type": "string"},
+    {"name": "side", "type": {"type": "enum", "name": "Side", "symbols": ["BUY", "SELL"]}},
+    {"name": "quantity", "type": "long"},
+    {"name": "price", "type": {"type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 4}},
+    {"name": "currency", "type": "string", "default": "USD"},
+    {"name": "venue", "type": "string"},
+    {"name": "event_ts", "type": {"type": "long", "logicalType": "timestamp-millis"}}
+  ]
+}

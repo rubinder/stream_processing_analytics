@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "namespace": "com.example.avro",
+  "name": "ClientLimit",
+  "fields": [
+    {"name": "client_id", "type": "string"},
+    {"name": "max_gross_notional", "type": {"type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 2}},
+    {"name": "max_single_order_notional", "type": {"type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 2}},
+    {"name": "max_trades_per_minute", "type": "int"},
+    {"name": "updated_ts", "type": {"type": "long", "logicalType": "timestamp-millis"}}
+  ]
+}

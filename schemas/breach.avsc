@@ -1,0 +1,16 @@
+{
+  "type": "record",
+  "namespace": "com.example.avro",
+  "name": "Breach",
+  "fields": [
+    {"name": "breach_id", "type": "string"},
+    {"name": "client_id", "type": "string"},
+    {"name": "breach_type", "type": {"type": "enum", "name": "BreachType", "symbols": ["GROSS_NOTIONAL", "SINGLE_ORDER_NOTIONAL", "TRADE_VELOCITY"]}},
+    {"name": "limit_value", "type": {"type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 2}},
+    {"name": "actual_value", "type": {"type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 2}},
+    {"name": "trade_id", "type": ["null", "string"], "default": null},
+    {"name": "order_id", "type": ["null", "string"], "default": null},
+    {"name": "detected_ts", "type": {"type": "long", "logicalType": "timestamp-millis"}},
+    {"name": "details", "type": "string"}
+  ]
+}

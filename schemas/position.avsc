@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "namespace": "com.example.avro",
+  "name": "Position",
+  "fields": [
+    {"name": "client_id", "type": "string"},
+    {"name": "symbol", "type": "string"},
+    {"name": "net_quantity", "type": "long"},
+    {"name": "avg_price", "type": {"type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 4}},
+    {"name": "notional", "type": {"type": "bytes", "logicalType": "decimal", "precision": 18, "scale": 2}},
+    {"name": "sector", "type": "string"},
+    {"name": "last_update", "type": {"type": "long", "logicalType": "timestamp-millis"}}
+  ]
+}
