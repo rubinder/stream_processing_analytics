@@ -1,0 +1,12 @@
+{
+  "AAPL": "Technology", "MSFT": "Technology", "GOOGL": "Technology", "META": "Technology",
+  "NVDA": "Technology", "AMD": "Technology", "INTC": "Technology", "ORCL": "Technology",
+  "CRM": "Technology", "ADBE": "Technology",
+  "JPM": "Financials", "BAC": "Financials", "WFC": "Financials", "GS": "Financials",
+  "MS": "Financials", "C": "Financials",
+  "JNJ": "Healthcare", "PFE": "Healthcare", "MRK": "Healthcare", "UNH": "Healthcare",
+  "ABBV": "Healthcare",
+  "XOM": "Energy", "CVX": "Energy", "COP": "Energy",
+  "WMT": "ConsumerStaples", "KO": "ConsumerStaples", "PG": "ConsumerStaples",
+  "TSLA": "ConsumerDiscretionary", "AMZN": "ConsumerDiscretionary", "NKE": "ConsumerDiscretionary"
+}
