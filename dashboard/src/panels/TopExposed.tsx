@@ -8,7 +8,7 @@ export function TopExposed() {
     queryKey: ["top-exposed"],
     queryFn: () =>
       pinotQuery<Row>(
-        "SELECT client_id, SUM(ABS(notional)) AS gross FROM positions GROUP BY client_id ORDER BY gross DESC LIMIT 10"
+        "SELECT client_id, SUM(ABS(notional_double)) AS gross FROM positions GROUP BY client_id ORDER BY gross DESC LIMIT 10"
       ),
     refetchInterval: 5_000,
   });

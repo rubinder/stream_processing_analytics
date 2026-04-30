@@ -1,4 +1,4 @@
-const PINOT_URL = import.meta.env.VITE_PINOT_URL || "http://localhost:8099/query/sql";
+const PINOT_URL = import.meta.env.VITE_PINOT_URL || "/pinot";
 
 interface PinotResponse {
   resultTable?: { dataSchema: { columnNames: string[] }; rows: unknown[][] };
