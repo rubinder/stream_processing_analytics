@@ -8,12 +8,15 @@ import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
+import org.apache.flink.util.OutputTag;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Instant;
 
 public class PositionUpdater extends KeyedProcessFunction<String, EnrichedTrade, Position> {
+
+    public static final OutputTag<EnrichedTrade> ENRICHED_TAG = new OutputTag<>("enriched") {};
 
     public static class State {
         public long netQuantity;
@@ -63,6 +66,8 @@ public class PositionUpdater extends KeyedProcessFunction<String, EnrichedTrade,
         BigDecimal notional = s.lastPrice
             .multiply(BigDecimal.valueOf(s.netQuantity))
             .setScale(2, RoundingMode.HALF_UP);
+
+        ctx.output(ENRICHED_TAG, t);
 
         out.collect(Position.newBuilder()
             .setClientId(t.getClientId())

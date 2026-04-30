@@ -68,4 +68,14 @@ class PositionUpdaterTest {
             assertThat(out.get(1).getLastUpdate().toEpochMilli()).isEqualTo(5_000L);
         }
     }
+
+    @Test
+    void emitsEnrichedTradeToSideOutput() throws Exception {
+        try (var h = harness()) {
+            h.processElement(new StreamRecord<>(et("t1", "AAPL", Side.BUY, 10, "100.0000", 1_000L), 1_000L));
+            h.processElement(new StreamRecord<>(et("t2", "AAPL", Side.SELL, 5, "110.0000", 2_000L), 2_000L));
+            var sideOutput = h.getSideOutput(PositionUpdater.ENRICHED_TAG);
+            assertThat(sideOutput).hasSize(2);
+        }
+    }
 }
